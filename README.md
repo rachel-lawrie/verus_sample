@@ -2,10 +2,10 @@
 
 The following repositories contain a selection of code I wrote at Verus as one of three founding engineers. The functionality outlined here represents just a small part of a much larger codebase.
 
-https://github.com/rachel-lawrie/verus_shared
-https://github.com/rachel-lawrie/verus_backend_core
-https://github.com/rachel-lawrie/verus_app_backend
-https://github.com/rachel-lawrie/verus_cockpit_backend
+- https://github.com/rachel-lawrie/verus_shared
+- https://github.com/rachel-lawrie/verus_backend_core
+- https://github.com/rachel-lawrie/verus_app_backend
+- https://github.com/rachel-lawrie/verus_cockpit_backend
 
 
 To provide context on how this code was originally structured and developed, I’ve maintained the same multi-repository setup and Docker-based environment used in the full application. This approach offers insight into both the code itself and the development environment I designed.  
@@ -80,11 +80,11 @@ docker-compose -f docker-compose.dev.yml up --remove-orphans
 ```
 
 ### Tests to run
-- Make sure main app is running. You should see "The server is up and working."
+**Make sure main app is running. You should see "The server is up and working.**
 ```
 curl http://localhost:8080/
 ```
-- Make sure the cockpit backend is running. You should see "The server is up and working."
+**Make sure the cockpit backend is running. You should see "The server is up and working."**
 ```
 curl http://localhost:8000/cockpit/
 ```
@@ -96,7 +96,7 @@ curl -X POST http://localhost:8000/cockpit/v1/clients \
 ```
 Record the client_id from the response.
 
-- Generate an API key for the client, using the client_id from the previous step in the request body and a chosen name for the key.
+**Generate an API key for the client, using the client_id from the previous step in the request body and a chosen name for the key.**
 ```
 curl -X POST http://localhost:8000/cockpit/v1/secrets \
   -H "Content-Type: application/json" \
@@ -108,7 +108,7 @@ curl -X POST http://localhost:8000/cockpit/v1/secrets \
 ```
 Record the api_key from the response.
 
-- Create an applicant, using the api_key from the previous step in the header.
+**Create an applicant, using the api_key from the previous step in the header.**
 ```
 curl -X POST http://localhost:8080/api/v1/protected/applicants \
   -H "Content-Type: application/json" \
