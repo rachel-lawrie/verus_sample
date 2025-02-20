@@ -88,5 +88,73 @@ curl http://localhost:8080/
 ```
 curl http://localhost:8000/cockpit/
 ```
+- Create a client (customer of Verus)
+```
+curl -X POST http://localhost:8000/cockpit/v1/clients \
+  -H "Content-Type: application/json" \
+  -d '{"company_name": "TEST_COMPANY_NAME"}'
+```
+Record the client_id from the response.
 
+- Generate an API key for the client, using the client_id from the previous step in the request body and a chosen name for the key.
+```
+curl -X POST http://localhost:8000/cockpit/v1/secrets \
+  -H "Content-Type: application/json" \
+  -d '{
+    "client_id": "TEST_CLIENT_ID",
+    "environment": "dev",
+    "name": "TEST_NAME_OF_KEY"
+  }'
+```
+Record the api_key from the response.
 
+- Create an applicant, using the api_key from the previous step in the header.
+```
+curl -X POST http://localhost:8080/api/v1/protected/applicants \
+  -H "Content-Type: application/json" \
+  -H "X-API-Key: YOUR_API_KEY" \
+  -d '{
+    "first_name": "TEST_FIRST_NAME",
+    "middle_name": "TEST_MIDDLE_NAME",
+    "last_name": "TEST_LAST_NAME",
+    "email": "TEST_EMAIL",
+    "phone": "TEST_PHONE",
+    "address": {
+      "line1": "TEST_LINE1",
+      "line2": "TEST_LINE2",
+      "city": "TEST_CITY",
+      "region": "TEST_REGION",
+      "postal_code": "TEST_POSTAL_CODE",
+      "country": "TEST_COUNTRY"
+    },
+    "dob": "TEST_DOB",
+    "level": "Basic KYC"
+  }'
+```
+For example:
+
+```
+curl -X POST http://localhost:8080/api/v1/protected/applicants \
+  -H "Content-Type: application/json" \
+  -H "X-API-Key: 71a43e06199c6cf6533b3317f977bc62" \
+  -d '{
+    "first_name": "John",
+    "middle_name": "Mark",
+    "last_name": "Marly",
+    "email": "john@example.com",
+    "phone": "+1234567890",
+    "address": {
+      "line1": "123 Main St",
+      "line2": "Apt 4B",
+      "city": "Springfield",
+      "region": "IL",
+      "postal_code": "62704",
+      "country": "USA"
+    },
+    "dob": "1990-02-01",
+    "level": "Basic KYC"
+  }'
+```
+When the request is made, personally identifying information is encrypted using AWS Key Management Service (KMS) before it is stored at rest. See CreateApplicant function in verus_app-backend/internal/applicant/controllers/applicant_controller.go and backend-core/utils/kmsuploader.go and backend-core/utils/encryption.go for the logic.
+
+You can then view the stored client, secret (hashed) and applicant in the database either through the IDE (described above) or MongoDB Compass.
